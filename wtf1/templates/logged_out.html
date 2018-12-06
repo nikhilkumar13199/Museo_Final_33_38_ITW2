@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+<header>
+    <div class="login">
+    <h1>Login</h1>
+    {% if user.is_authenticated %}
+      Hi {{ user.username }}!
+      <a href="{% url 'museo:logout' %}">logout</a>
+    {% else %}
+      <a href="{% url 'museo:login' %}" class="btn">login</a>
+    {% endif %}
+  </div>
+  </header>
+<div class="logged-out">
+  <h2>Logged out</h2>
+  <p>You have been successfully logged out.</p>
+  
+
+  <footer>
+  		<a href="/museo/feed" class="btn">Feed</a>
+  		<a href="/museo/index" class="btn">Index</a>
+  </footer>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!-- Using Material CSS CDN -->
+
+      <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style type="text/css">
+      	body{
+      		margin: 0;
+      		font-family: "Abel";
+      	}
+
+      	#text_in_feed_button{
+      		color: black;
+      	}
+
+        .mynav{
+      /*padding: 14px 16px;*/
+      background-color: #775e7a;
+      overflow: hidden;
+      
+      }
+
+    .mynav a{
+      float: left;
+      text-align: center;
+      padding: 10px 12px;
+      text-decoration: none;
+      font-size: 25px;
+      color: white;
+      transition-duration: 0.8s;
+
+    }
+
+    .mynav a:hover{
+      background-color: #8ddfcc;
+      
+    }
+    .profile-btn{
+      float: right;
+    }
+
+    .this_template{
+      margin:20px;
+    }
+      </style>
+
+      <title>Create a Post</title>
+    </head>
+
+    <body>
+      <form method="POST" action="{% url 'museo:createpost' %}">
+      	{% csrf_token %}
+        <!-- This is the navigation bar -->
+        <header>
+      {% if user.is_authenticated %}
+      <div class="mynav">
+        <a href="/museo/index">Movies List</a>
+        <a href="/museo/topusers">Top Users</a>
+        <a href="/museo/createpost">Write</a>
+        <a href="/museo/feed">Feed</a>
+        <a href="/museo/profile" class="profile-btn">{{ user.username }}</a>
+        <a href="/museo/logout">Logout</a>
+        <a href="/museo/rssfeed">RSS Feed</a>
+      </div>
+      {% else %}
+      <div class="mynav">
+        <a href="/museo/index">Movies List</a>
+        <a href="/museo/topusers">Top Users</a>
+        <a href="/museo/createpost">Write</a>
+        <a href="/museo/feed">Feed</a>
+        <a href="/museo/login" class="profile-btn">Login</a>
+        <a href="/museo/register">Sign Up</a>
+        <a href="/museo/rssfeed">RSS Feed</a>
+      </div>
+      {% endif %}
+    </header>
+    {% if messages %}
+      {% for i in messages %}
+      <center><p class="error">{{ i }}</p></center>
+      {% endfor %}
+
+    {% endif %}
+    <div class="this_template">
+  		<h1>Write your post here</h1>
+  		<input type="text" name="content" maxlength="2451" placeholder="Write the content here">
+  		{% if user.is_authenticated %}
+  		<h4>Hello {{ user.username }}</h4>
+      <a href="/museo/logout" class="waves-effect btn teal lighten-3 " id="logout_button">Logout</a>
+  		<center><input type="submit" name="Publish" value="Publish" class="waves-effect btn-large teal lighten-3">
+  		<a href="/museo/feed" class="waves-effect btn-large teal lighten-3"><div id="text_in_feed_button">Feed</div></a></center>
+  		{% else %}
+  		<h4>Please login to publish</h4>
+  		<a href="/museo/login" class="waves-effect btn teal lighten-3">Login</a>
+  		<center><input type="submit" name="Publish" value="Publish" class="waves-effect btn-large teal lighten-3 disabled">
+  		<a href="/museo/feed" class="waves-effect btn-large teal lighten-3"><div id="text_in_feed_button">Feed</div></a></center>
+  		{% endif %}
+		</div>
+	</form>
+      <!--JavaScript at end of body for optimized loading-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    </body>
+  </html>

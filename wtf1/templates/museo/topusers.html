@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Top Users</title>
+	<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<style type="text/css">
+		body{
+			background-color: #e6e6fa;
+			margin: 0;
+			font-family: 'Abel';
+			font-weight: 500;
+
+		}
+		.list-row{
+			background-color: #a0aaad;
+			
+		}
+
+		.mynav{
+			/*padding: 14px 16px;*/
+			background-color: #775e7a;
+			overflow: hidden;
+			position: fixed;
+			top: 0;
+			width:100%;
+		}
+
+		.mynav a{
+			float: left;
+			text-align: center;
+			padding: 10px 12px;
+			text-decoration: none;
+			font-size: 25px;
+			color: white;
+			transition-duration: 0.8s;
+			
+		}
+
+		.mynav a:hover{
+			background-color: #8ddfcc;
+			
+		}
+		.profile-btn{
+			float: right;
+		}
+
+		.fuck{
+			margin: 30px;
+		}
+		.table{
+			width:70%;
+			margin:auto;
+			border-style: groove;
+			line-height: 0.6em;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+<body>
+	<form action="{% url 'museo:index' %}" method="post">
+		<header>
+			{% if user.is_authenticated %}
+			<div class="mynav">
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Top Users</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/profile" class="profile-btn">{{ user.username }}</a>
+				<a href="/museo/logout">Logout</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% else %}
+			<div class="mynav">
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Top Users</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/login" class="profile-btn">Login</a>
+				<a href="/museo/register">Sign Up</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% endif %}
+		</header>
+		<br>
+		<div class="table">
+			<table class="responsive-table centered highlight">
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Total upvotes</th>
+						<th>Total Downvotes</th>
+						<th>Posts</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for b in row %}
+					<tr>
+						<td>{{ b.4 }}</td>
+						<td>{{ b.1 }}</td>
+						<td>{{ b.2 }}</td>
+						<td>{{ b.5 }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<!-- <div class="fuck">
+		<table>
+			<tr class="list-row">
+				<td>User ID</td>
+				<td>Total Upvotes</td>
+				<td>Total Downvotes</td>
+			</tr> 
+			{% for b in row %}
+
+			{% endfor %}
+		</table>
+	</div> -->
+		{% csrf_token %}
+	</form>
+	<!--JavaScript at end of body for optimized loading-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+</body>
+</html>
+

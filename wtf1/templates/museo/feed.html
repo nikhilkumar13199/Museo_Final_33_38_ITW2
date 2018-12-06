@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Feed</title>
+	<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+	
+	<style type="text/css">
+		body{
+			background-color: #e6e6fa;
+			margin: 0;
+			font-family: 'Abel'; 
+			
+		}
+		.list-row{
+			background-color: #a0aaad;
+			
+		}
+
+		.error{
+			color: red;
+			font-weight: bold;
+		}
+
+		.submit-btn{
+			top:100px;
+			right:100px;
+			position: fixed;
+			padding: 15px;
+			border-radius: 5px;
+
+		}
+
+		.mynav{
+			/*padding: 14px 16px;*/
+			background-color: #775e7a;
+			overflow: hidden;
+			position: fixed;
+			top:0;
+			width: 100%;
+		}
+
+		.mynav a{
+			float: left;
+			text-align: center;
+			padding: 10px 12px;
+			text-decoration: none;
+			font-size: 25px;
+			color: white;
+			transition-duration: 0.8s;
+			
+		}
+
+		.mynav a:hover{
+			background-color: #8ddfcc;
+			
+		}
+		.profile-btn{
+			float: right;
+		}
+
+		.card{
+			width: 70%;
+			border-style: groove;
+			border-radius: 5px;
+			box-shadow: 3px 3px  3px grey;
+			margin:auto;
+			line-height: 1.0em;
+			background-color: white;
+		}
+		.card-content{
+			margin-left: 20px;
+			margin-right: 20px;
+			margin-bottom: 15px;
+		}
+		main{
+			margin-top:50px;
+		}
+	</style>
+</head>
+<body>
+
+	<form method="post" action="{% url 'museo:feed' %}">
+		{% csrf_token %}
+		<header>
+			<!-- if user is authenticated then print this navbar -->
+			{% if user.is_authenticated %}
+			<div class="mynav">
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Top Users</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/profile" class="profile-btn">{{ user.username }}</a>
+				<a href="/museo/logout">Logout</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% else %}
+			<!-- if user is not authenticated the print this navbar -->
+			<div class="mynav">
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Top Users</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/login" class="profile-btn">Login</a>
+				<a href="/museo/register">Sign Up</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% endif %}
+		</header>
+		
+		<br>
+		<main>
+			{% if messages %}
+			{% for i in messages %}
+			<center><p class="error">{{ i }}</p></center>
+			{% endfor %}
+		{% endif %}
+			<table>
+			<!-- Iterating over the row in context dictionary passed to this template -->
+			{% for b in row %}
+			<tr class="list-row">
+				<div class="card">
+					<div class="card-content">
+						<h3>By- {{ b.2 }}</h3>
+						<p>Post Id- {{ b.0 }}</p>
+						<p>User Id- {{ b.1 }}</p>
+						<hr>
+						<p>{{ b.3 }}</p>
+						<hr>
+						<p>Upvotes- {{ b.4 }} Downvotes - {{ b.5 }}</p>
+						{% if user.is_authenticated %}
+						<input type="radio" name="upvote" id="{{ b.0 }}" value="{{b.0}}"></input>
+						<label for="{{ b.0 }}">Upvote</label>
+						{% else %}
+						<input type="radio" name="upvote" id="{{ b.0 }}" value="{{b.0}}" disabled=""></input>
+						<label for="{{ b.0 }}">Upvote</label>
+						{% endif %}
+						{% if user.is_authenticated %}
+						<input type="radio" name="downvote" id="{{ b.0 }}" value="{{b.0}}"></input>
+						<label for="{{ b.0 }}">Downvote</label>
+						{% else %}
+						<input type="radio" name="downvote" id="{{ b.0 }}" value="{{b.0}}" disabled=""></input>
+						<label for="{{ b.0 }}">Downvote</label>
+						{% endif %}
+						</div>
+				</div>
+				<br>
+				
+			</tr>
+			{% endfor %}
+		</table>
+		</main>
+		<input type="submit" name="submit" value="submit" class="submit-btn">
+	</form>
+
+</body>
+</html>

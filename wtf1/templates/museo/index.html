@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Index</title>
+	<!-- this is to import a font -->
+	<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+	<style type="text/css">
+		body{
+			background-color: #e6e6fa;
+			margin:0;
+			font-family: "Abel";
+		}
+
+		/*custom css script for designing navbar*/
+		.mynav{
+			/*padding: 14px 16px;*/
+			background-color: #775e7a;
+			overflow: hidden;
+			position: fixed;
+  			top: 0;
+  			width: 100%;
+		}
+
+		.mynav a{
+			float: left;
+			text-align: center;
+			padding: 10px 12px;
+			text-decoration: none;
+			font-size: 25px;
+			color: white;
+			transition-duration: 0.8s;
+			
+		}
+
+		.mynav a:hover{
+			background-color: #8ddfcc;
+			
+		}
+		.profile-btn{
+			float: right;
+		}
+
+		.movie-list{
+			width:60%;
+			margin: auto;
+			border-style: groove;
+			border-radius: 8px;
+			line-height: 0.6em;
+			box-shadow: 3px 3px  3px grey;
+			background-color: white;
+		}
+
+		.movie-list-content{
+			margin-left: 20px;
+			z-index: -1;
+
+		}
+
+		.site-name{
+			background-color: white;
+			color: #775e7a;
+			font-weight: bold;
+			
+			text-shadow: 1px 1px black;
+			margin: 0;
+			padding-top:10px;
+			padding-bottom: 10px;
+			padding-left: 15px;
+
+		}
+
+		.page-title{
+			top:100px;
+			margin-top: 120px;
+		}
+
+	</style>
+</head>
+<body>
+	<header>
+			<!-- this navbar if user is authenticated -->
+			{% if user.is_authenticated %}
+			<div class="mynav">
+				<h1 class="site-name">MUSEO.COM</h1>
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Topusers</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/profile" class="profile-btn">{{ user.username }}</a>
+				<a href="/museo/logout">Logout</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% else %}
+			<div class="mynav">
+				<h1 class="site-name">MUSEO.COM</h1>
+				<a href="/museo/index">Movies List</a>
+				<a href="/museo/topusers">Topusers</a>
+				<a href="/museo/createpost">Write</a>
+				<a href="/museo/feed">Feed</a>
+				<a href="/museo/login" class="profile-btn">Login</a>
+				<a href="/museo/register">Sign Up</a>
+				<a href="/museo/rssfeed">RSS Feed</a>
+			</div>
+			{% endif %}
+		</header>
+
+	<center><h1 class="page-title">Movies list</h1></center>
+	
+	
+	
+	<form action="{% url 'museo:index' %}" method="post">
+		<table>
+			<!-- <tr>
+				<td class="list-row">Movie id</td>
+				<td class="list-row">Movie</td>
+				<td class="list-row">Year</td>
+				<td class="list-row">IMDB</td>
+				<td class="list-row">Tomatometer</td>
+			</tr> --> 
+			{% for b in row %}
+			<tr class="list-row">
+				<!-- {% for x in b %}
+				<td>
+					{{ x }}
+				</td>
+				{% endfor %} -->
+				<div class="movie-list">
+					<div class="movie-list-content">
+					<h3>{{ b.1 }}</h3>
+					<p>{{ b.2 }}</p>
+					<br>
+					<p>IMDB Rating - {{ b.3 }}</p>
+					<p>Tomatometer - {{ b.4 }}</p>
+				</div>
+				</div>
+			</tr>
+			<br>
+			{% endfor %}
+		</table>
+		{% csrf_token %}
+	</form>
+
+</body>
+</html>

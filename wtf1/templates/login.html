@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<!-- if user is authenticated then you should not login as different user again before logging out -->
+		<center>
+		<h2>You are logged in</h2>
+		<a href="/museo/feed" class="btn-large">Feed</a>
+	</center>
+	{% else %}
+	<!-- if you are not logged in then you may log in -->
+  <div class="login">
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Login</button>
+    <a href="/museo/register" class="btn">Sign Up</a>
+  </form>
+	</div>
+	{% endif %}
+{% endblock %}

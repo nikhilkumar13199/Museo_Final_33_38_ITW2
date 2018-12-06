@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sign Up</title>
+	<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
+	
+	<style type="text/css">
+		body{
+			font-family: "Abel";
+      margin:0;
+		}
+    .mynav{
+      /*padding: 14px 16px;*/
+      background-color: #775e7a;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      width:100%;
+    }
+
+    .mynav a{
+      float: left;
+      text-align: center;
+      padding: 10px 12px;
+      text-decoration: none;
+      font-size: 25px;
+      color: white;
+      transition-duration: 0.8s;
+      
+    }
+
+    .mynav a:hover{
+      background-color: #8ddfcc;
+      
+    }
+    .profile-btn{
+      float: right;
+    }
+    .main{
+      margin-top:50px;
+      margin-left:30px;
+    }
+	</style>
+</head>
+<body>
+	
+	<form method="post" action="{% url 'museo:register' %}">
+    <header>
+      <!-- this navbar if user is authenticated -->
+      {% if user.is_authenticated %}
+      <div class="mynav">
+        <a href="/museo/index">Movies List</a>
+        <a href="/museo/topusers">Top Users</a>
+        <a href="/museo/createpost">Write</a>
+        <a href="/museo/feed">Feed</a>
+        <a href="/museo/profile" class="profile-btn">{{ user.username }}</a>
+        <a href="/museo/logout">Logout</a>
+      </div>
+      {% else %}
+      <!-- this navbar if user is not authenticated -->
+      <div class="mynav">
+        <a href="/museo/index">Movies List</a>
+        <a href="/museo/topusers">Top Users</a>
+        <a href="/museo/createpost">Write</a>
+        <a href="/museo/feed">Feed</a>
+        <a href="/museo/login" class="profile-btn">Login</a>
+        <a href="/museo/register">Sign Up</a>
+      </div>
+      {% endif %}
+    </header>
+    <br>
+    <div class="main">
+    <h2>Sign up here!</h2>
+		{% csrf_token %}
+		{% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+    
+		</div>
+	</form>
+
+</body>
+</html>
